@@ -22,6 +22,9 @@ while(True):
   ret, frame = cap.read()
   if ret == False:
     break
+  
+  # Lật ảnh cho đỡ bị ngược
+  frame = cv2.flip(frame, 1)
   # chuyển về ảnh xám để train
   gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -36,11 +39,11 @@ while(True):
     roi_color = frame[y:y+h, x:x+w]
 
     id_, conf = recognizer.predict(roi_gray)
-    if conf >= 45:
-      print(id_)
-      print(labels[id_])
-      font = cv2.FONT_HERSHEY_SIMPLEX
-      name = labels[id_]
+    if conf >= 30:
+      # print(id_)
+      # print(labels[id_])
+      font = cv2.FONT_HERSHEY_COMPLEX_SMALL
+      name = labels[id_] + " | " + str(round(conf, 3))
       color = (255, 255, 255)
       stroke = 2
       cv2.putText(frame, name, (x, y), font, 1, color, stroke, cv2.LINE_AA)
